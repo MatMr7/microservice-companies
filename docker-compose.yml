@@ -1,9 +1,9 @@
 version: "3.7"
 services:
-    # imagem micro 01
-    micro_01:
-        build: 
-            args: 
+    # imagem  micro_01 company api
+    micro_company:
+        build:
+            args:
                 user: matheus
                 uid: 1000
             context: ./
@@ -13,38 +13,66 @@ services:
         working_dir: /var/www/
         volumes:
             - ./:/var/www
-        networks: 
+        depends_on:
+            - redis
+            - queue_company
+        networks:
             - microservices
 
     # nginx
     nginx:
         image: nginx:alpine
         restart: unless-stopped
-        ports: 
-            - 8000:80
-            - 443:443
-        volumes: 
+        ports:
+            - 8001:80
+        volumes:
             - ./:/var/www
             - ./docker/nginx/:/etc/nginx/conf.d/
-        networks: 
+        networks:
             - microservices
 
     # mysql micro 01
     db_micro_01:
         image: mysql:5.7.22
         restart: unless-stopped
-        environment: 
+        environment:
             MYSQL_DATABASE: ${DB_DATABASE}
             MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
             MYSQL_PASSWORD: ${DB_PASSWORD}
             MYSQL_USER: ${DB_USERNAME}
-        volumes: 
+        volumes:
             - ./.docker/mysql/dbdata:/var/lib/mysql
-        ports: 
+        ports:
             - 3308:3306
-        networks: 
+        networks:
             - microservices
 
-networks: 
+    #queue company
+    queue_company:
+        build:
+            args:
+                user: matheus
+                uid: 1000
+            context: ./
+            dockerfile: Dockerfile
+        image: laravel-app
+        restart: unless-stopped
+        command: "php artisan queue:work"
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - redis
+        networks:
+            - microservices
+
+
+    #redis
+    redis:
+        image: redis:latest
+        networks:
+            - microservices
+
+
+networks:
     microservices:
         driver: bridge

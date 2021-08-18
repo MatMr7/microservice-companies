@@ -5,15 +5,20 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateCompany;
 use App\Http\Resources\CompanyResource;
+use App\Jobs\CompanyCreated;
 use App\Models\Company;
+use App\Services\EvaluationService;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
     protected $repository;
 
-    public function __construct(Company $model)
+    protected $evaluationService;
+
+    public function __construct(Company $model, EvaluationService $evaluationService)
     {
+        $this->evaluationService = $evaluationService;
         $this->repository = $model;
     }
     /**
@@ -38,6 +43,8 @@ class CompanyController extends Controller
     {
         $company = $this->repository->create($request->validated());
 
+        CompanyCreated::dispatch($company->email);
+
         return new CompanyResource($company);
     }
 
@@ -51,7 +58,12 @@ class CompanyController extends Controller
     {
         $company = $this->repository->where('uuid',$uuid)->firstOrFail();
 
-        return new CompanyResource($company);
+        $evaluations = $this->evaluationService->getEvaluationsCompany($uuid);
+
+        return (new CompanyResource($company))
+            ->additional([
+                'evaluations' => json_decode($evaluations)
+            ]);
     }
 
     /**

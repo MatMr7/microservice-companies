@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7759431e303e2d722a264a8a991a9e84",
+    "content-hash": "0a27f1e97b505c74c6677e05524f479c",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1343,6 +1343,43 @@
                 }
             ],
             "time": "2021-01-18T20:58:21+00:00"
+        },
+        {
+            "name": "matmr7/microservices-commom",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MatMr7/microservices-commom.git",
+                "reference": "577a6c3b6a02bfe5c754ca08c96e0e3156910964"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MatMr7/microservices-commom/zipball/577a6c3b6a02bfe5c754ca08c96e0e3156910964",
+                "reference": "577a6c3b6a02bfe5c754ca08c96e0e3156910964",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Matmr7\\MicroservicesCommom\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matheus Morais",
+                    "email": "ti.matheus.morais@gmail.com"
+                }
+            ],
+            "description": "Package main funcionalities in microservices",
+            "support": {
+                "issues": "https://github.com/MatMr7/microservices-commom/issues",
+                "source": "https://github.com/MatMr7/microservices-commom/tree/1.0"
+            },
+            "time": "2021-08-10T23:46:26+00:00"
         },
         {
             "name": "monolog/monolog",
