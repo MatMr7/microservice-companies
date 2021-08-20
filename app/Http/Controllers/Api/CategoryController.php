@@ -65,7 +65,7 @@ class CategoryController extends Controller
     public function update(StoreUpdateCategory $request, $url)
     {
         $category = $this->repository->where('url',$url)->firstOrFail();
-        
+
         $category->update($request->validated());
 
         return response()->json(['message' => 'success']);
